@@ -34,6 +34,9 @@ async function startServer() {
 
   app.use(express.json());
 
+  // Serve static files from backend/public
+  app.use("/public", express.static(path.join(__dirname, "backend", "public")));
+
   // API Routes
   app.get("/api/user", (req, res) => {
     let user = db.prepare("SELECT * FROM users LIMIT 1").get();
