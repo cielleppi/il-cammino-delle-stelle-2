@@ -215,7 +215,8 @@ const PuzzleStop = ({
 
                   setCanReplay(false);
                   console.log("PuzzleStop: Starting narration immediately...");
-                  speak(isSimplified ? encounter.verse.simplified : encounter.description).finally(() => {
+                  const textToSpeak = isSimplified ? encounter.verse.simplified : (encounter.id === "la-selva-oscura" ? encounter.verse.text.replace(/____|\.\.\./, encounter.verse.missingWord) : encounter.description);
+                  speak(textToSpeak).finally(() => {
                     setCanReplay(true);
                     console.log("PuzzleStop: Replay finished");
                   });
@@ -246,21 +247,21 @@ const PuzzleStop = ({
             </div>
           </div>
           <h1 className="text-sm sm:text-xl md:text-2xl font-serif italic text-white mb-0 sm:mb-2 tracking-tight">{encounter.name}</h1>
-          <p className="text-white/60 leading-tight text-[8px] sm:text-xs md:text-sm max-w-xl font-light whitespace-pre-line">
-            {isSimplified ? encounter.verse.simplified : encounter.description}
+          <p className="text-white/60 leading-tight text-[8px] sm:text-xs md:text-sm max-w-xl font-light whitespace-pre-line mb-1 sm:mb-2 italic">
+            {isSimplified ? (encounter.puzzleHeaderSimplified || encounter.verse.simplified) : (encounter.puzzleHeader || encounter.description)}
           </p>
         </div>
 
         <div className="space-y-1.5 sm:space-y-3 relative z-10">
           <div className="text-[10px] sm:text-base md:text-xl font-serif text-center py-1 sm:py-3 px-2 sm:px-4 bg-white/5 rounded-xl sm:rounded-[20px] border border-white/5 shadow-inner break-words">
-            {encounter.verse.text.split('____').map((part, i, arr) => (
+            {encounter.verse.text.split(/____|\.\.\./).map((part, i, arr) => (
               <React.Fragment key={i}>
                 <span className="text-white/90">{part}</span>
                 {i < arr.length - 1 && (
                   <motion.span 
                     ref={targetRef}
                     animate={isWrong ? { x: [-5, 5, -5, 5, 0] } : isCorrect ? { scale: [1, 1.1, 1] } : {}}
-                    className={`inline-block min-w-[100px] sm:min-w-[140px] border-b-2 mx-2 sm:mx-3 transition-colors ${isWrong ? 'border-red-500 text-red-400' : isCorrect ? 'border-yellow-500 text-yellow-400' : 'border-white/20 text-white'}`}
+                    className={`inline-block min-w-[70px] sm:min-w-[140px] border-b-2 mx-1 sm:mx-3 transition-colors ${isWrong ? 'border-red-500 text-red-400' : isCorrect ? 'border-yellow-500 text-yellow-400' : 'border-white/20 text-white'}`}
                   >
                     {selected || "..."}
                   </motion.span>
@@ -3096,7 +3097,7 @@ export default function App() {
                   <div className="flex items-end justify-center gap-4 md:gap-8">
                     <div className="w-full max-w-xl min-h-[4.5em] md:min-h-[5.5em] flex flex-col justify-end text-center pb-1 md:pb-2">
                       <p className="text-white/80 font-serif italic text-base md:text-lg whitespace-pre-line leading-tight sm:leading-relaxed">
-                        {isSimplified ? currentEncounter.verse.simplified : currentEncounter.description}
+                        {isSimplified ? (currentEncounter.simplifiedDescription || currentEncounter.verse.simplified) : currentEncounter.description}
                       </p>
                     </div>
                     <div className="flex items-end gap-4 md:gap-6 min-h-[4.5em] md:min-h-[5.5em] pb-1 md:pb-2">
@@ -3119,7 +3120,9 @@ export default function App() {
 
                           setJourneyCanReplay(false);
                           console.log("Journey: Starting narration immediately...");
-                          const textToSpeak = isSimplified ? ENCOUNTERS[currentEncounterIdx].verse.simplified : ENCOUNTERS[currentEncounterIdx].introduction;
+                          const textToSpeak = isSimplified 
+                            ? (ENCOUNTERS[currentEncounterIdx].simplifiedDescription || ENCOUNTERS[currentEncounterIdx].verse.simplified) 
+                            : ENCOUNTERS[currentEncounterIdx].introduction;
                           speak(textToSpeak).finally(() => {
                             setJourneyCanReplay(true);
                             console.log("Journey: Replay finished");
@@ -3150,7 +3153,7 @@ export default function App() {
 
                       {isSimplified && (
                         <div className="flex flex-col gap-2">
-                          {currentEncounter.verse.aacSequence.map(id => {
+                          {(currentEncounter.journeyAacSequence || currentEncounter.verse.aacSequence).map(id => {
                             const icon = AAC_ICONS[id];
                             return (
                               <motion.div

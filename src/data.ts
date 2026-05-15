@@ -11,6 +11,7 @@ export interface Verse {
   options: string[];
   simplified: string;
   aacSequence: string[]; // IDs of AAC icons
+  question?: string;
 }
 
 export interface Encounter {
@@ -18,6 +19,10 @@ export interface Encounter {
   name: string;
   canto: number;
   description: string;
+  simplifiedDescription?: string;
+  journeyAacSequence?: string[];
+  puzzleHeader?: string;
+  puzzleHeaderSimplified?: string;
   introduction: string;
   verse: Verse;
   background: string; // Color or theme
@@ -46,6 +51,8 @@ export const AAC_ICONS: Record<string, AACIcon> = {
   "fire": { id: "fire", label: "Fuoco", icon: "🔥" },
   "castle": { id: "castle", label: "Castello", icon: "🏰" },
   "sigh": { id: "sigh", label: "Sospiri", icon: "😮‍💨" },
+  "hard": { id: "hard", label: "Dura", icon: "🧱" },
+  "wild": { id: "wild", label: "Selvaggio", icon: "🌪️" },
   // Expression Icons
   "voglio": { id: "voglio", label: "Voglio", icon: "☝️" },
   "sento": { id: "sento", label: "Sento", icon: "👂" },
@@ -90,18 +97,23 @@ export const EXPRESSION_CATEGORIES = [
 
 export const ENCOUNTERS: Encounter[] = [
   {
-    id: "dark_wood",
+    id: "la-selva-oscura",
     name: "La Selva Oscura",
     canto: 1,
     description: "Nel mezzo del cammin di nostra vita\nmi ritrovai per una selva oscura,\nché la diritta via era smarrita.",
+    simplifiedDescription: "A metà della mia vita mi sono perso in un bosco buio.",
+    journeyAacSequence: ["forest", "dark", "fear"],
+    puzzleHeader: "Ahi quanto a dir qual era è cosa dura\nesta selva selvaggia e aspra e forte\nche nel pensier rinova la paura!",
+    puzzleHeaderSimplified: "È difficile raccontare di questo bosco selvaggio che fa ancora molta paura.",
     introduction: "Benvenuto, viandante. Ti trovi all'inizio di un viaggio periglioso. Smarrito in una selva dove la luce fatica a penetrare, dovrai ritrovare la via tra ombre e timori.",
     verse: {
       id: "v1",
-      text: "Nel mezzo del cammin di nostra ____",
-      missingWord: "vita",
-      options: ["vita", "morte", "strada", "selva"],
-      simplified: "A metà della mia vita mi sono perso in un bosco buio.",
-      aacSequence: ["forest", "dark", "fear"]
+      text: "Cosa rinnova il pensiero della selva ____?",
+      missingWord: "paura",
+      options: ["paura", "fuga", "pena", "tristezza"],
+      simplified: "È difficile raccontare di questo bosco selvaggio che fa ancora molta paura.",
+      aacSequence: ["hard", "wild", "forest", "fear"],
+      question: "Cosa rinnova il pensiero della selva spaventosa?"
     },
     background: "from-[#1e3a1e] via-[#0a1a0a] to-black"
   },
