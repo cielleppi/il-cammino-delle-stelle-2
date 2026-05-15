@@ -215,7 +215,13 @@ const PuzzleStop = ({
 
                   setCanReplay(false);
                   console.log("PuzzleStop: Starting narration immediately...");
-                  const textToSpeak = isSimplified ? encounter.verse.simplified : (encounter.id === "dark_wood" ? encounter.verse.text.replace(/____|\.\.\./, encounter.verse.missingWord) : encounter.description);
+                  let textToSpeak = isSimplified 
+                    ? (encounter.puzzleHeaderSimplified || encounter.verse.simplified) 
+                    : (encounter.puzzleHeader || encounter.verse.text);
+                  
+                  // Fill the gap for narration
+                  textToSpeak = textToSpeak.replace(/____|\.\.\./g, encounter.verse.missingWord);
+                  
                   speak(textToSpeak).finally(() => {
                     setCanReplay(true);
                     console.log("PuzzleStop: Replay finished");
@@ -3093,12 +3099,14 @@ export default function App() {
                 exit={{ opacity: 0, y: -20 }}
                 className="text-center max-w-3xl px-4 relative mb-1 sm:mb-2 md:mb-4"
               >
-                <div className="flex flex-col items-center gap-2 md:gap-4 mb-4 md:mb-6">
-                  <div className="flex items-center justify-center gap-4 md:gap-8 min-h-[5em]">
-                    <p className="text-white/80 font-serif italic text-base md:text-lg whitespace-pre-line leading-relaxed max-w-xl">
-                      {isSimplified ? currentEncounter.verse.simplified : currentEncounter.description}
-                    </p>
-                    <div className="flex items-center gap-4 md:gap-6">
+                <div className="flex flex-col items-center gap-2 md:gap-4 mb-2 md:mb-4">
+                  <div className="flex items-end justify-center gap-4 md:gap-8 min-h-[6em] md:min-h-[8em]">
+                    <div className="flex flex-col justify-end pb-2">
+                      <p className="text-white/80 font-serif italic text-base md:text-lg whitespace-pre-line leading-relaxed max-w-xl">
+                        {isSimplified ? currentEncounter.verse.simplified : currentEncounter.description}
+                      </p>
+                    </div>
+                    <div className="flex items-end gap-4 md:gap-6 pb-2">
                       <motion.button 
                         whileHover={journeyCanReplay ? { scale: 1.1, backgroundColor: 'rgba(255,255,255,0.2)' } : {}}
                         whileTap={journeyCanReplay ? { scale: 0.9 } : {}}
@@ -3126,7 +3134,7 @@ export default function App() {
                             console.log("Journey: Replay finished");
                           });
                         }}
-                        className={`w-10 h-10 md:w-12 md:h-12 rounded-full border flex items-center justify-center transition-all shrink-0 bg-white/20 border-white/40 text-white cursor-pointer pointer-events-auto`}
+                        className={`w-10 h-10 md:w-12 md:h-12 rounded-full border flex items-center justify-center transition-all shrink-0 bg-white/20 border-white/40 text-white cursor-pointer pointer-events-auto shadow-lg backdrop-blur-sm`}
                       >
                         <AnimatePresence mode="wait">
                           {!journeyCanReplay ? (

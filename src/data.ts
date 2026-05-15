@@ -53,6 +53,9 @@ export const AAC_ICONS: Record<string, AACIcon> = {
   "sigh": { id: "sigh", label: "Sospiri", icon: "😮‍💨" },
   "hard": { id: "hard", label: "Dura", icon: "🧱" },
   "wild": { id: "wild", label: "Selvaggio", icon: "🌪️" },
+  "path": { id: "path", label: "Cammino", icon: "🛣️" },
+  "back": { id: "back", label: "Tornare", icon: "⬅️" },
+  "mountain": { id: "mountain", label: "Salita", icon: "⛰️" },
   // Expression Icons
   "voglio": { id: "voglio", label: "Voglio", icon: "☝️" },
   "sento": { id: "sento", label: "Sento", icon: "👂" },
@@ -122,14 +125,17 @@ export const ENCOUNTERS: Encounter[] = [
     name: "Le Tre Fiere",
     canto: 1,
     description: "Una lonza leggera, un leone superbo e una lupa insaziabile\n ti sbarrano la strada verso il colle luminoso,\nspingendoti con terrore verso l'oscurità della selva",
+    puzzleHeader: "Ed ecco, quasi al cominciar de l'erta,\nuna lonza leggiera e presta molto,\nche di pel macolato era coverta;\n\ne non mi si partia dinanzi al volto,\nanzi 'mpediva tanto il mio cammino,\nch'i' fui per ritornar più volte vòlto.",
+    puzzleHeaderSimplified: "All'inizio della salita appare una lonza veloce e maculata.\nNon andava via e bloccava il mio cammino,\ncosì pensai spesso di tornare indietro.",
+    journeyAacSequence: ["leopard", "lion", "wolf", "fear"],
     introduction: "Il cammino verso la salvezza è sbarrato da tre ostacoli insormontabili. La lussuria, la superbia e l'avarizia prendono forma in tre bestie feroci che ti circondano, spegnendo ogni speranza di risalita.",
     verse: {
       id: "v_three_beasts",
-      text: "Una lonza, un leone e una ____ mi facevan paura e mi spingevano indietro.",
-      missingWord: "lupa",
-      options: ["lupa", "tigre", "bestia", "ombra"],
-      simplified: "Sulla montagna incontro tre animali feroci:\nuna lonza, un leone e una lupa spaventosa",
-      aacSequence: ["leopard", "lion", "wolf", "fear"]
+      text: "A causa della lonza, Dante fu per ritornar più volte vòlto. Cosa significa? Significa che voleva ____",
+      missingWord: "tornare indietro",
+      options: ["tornare indietro", "andare avanti", "sfidare la fiera", "riposarsi un po'"],
+      simplified: "All'inizio della salita appare una lonza veloce e maculata. Non andava via e bloccava il mio cammino, così pensai spesso di tornare indietro.",
+      aacSequence: ["mountain", "leopard", "path", "back"]
     },
     background: "from-[#1e3a1e] via-[#0a1a0a] to-black"
   },
