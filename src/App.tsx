@@ -973,8 +973,12 @@ export default function App() {
     if (currentEncounterIdx === 8 && targetState !== 'complete') {
       setGameState('solved');
       setLimboTransition('dissolving');
-      setTimeout(() => setLimboTransition('zooming'), 1500);
-      setTimeout(() => setLimboTransition('complete'), 4500);
+      setTimeout(() => setLimboTransition('zooming'), 1200);
+      setTimeout(() => {
+        setLimboTransition('complete');
+        // Automatically move to Francesca (Idx 9) after the cinematic transition
+        handleNextCanto();
+      }, 3500);
     } else {
       setGameState(targetState);
     }
@@ -983,10 +987,13 @@ export default function App() {
   const handleNextCanto = async () => {
     stop();
     const nextIdx = currentEncounterIdx + 1;
+    
+    // Reset any transition states
+    setLimboTransition('none');
+    
     if (nextIdx < ENCOUNTERS.length) {
       setCurrentEncounterIdx(nextIdx);
       setGameState('journey');
-      setLimboTransition('none'); // Reset transition state
       
       if (user && user.id) {
         fetch('/api/user/update', {
@@ -2130,7 +2137,7 @@ export default function App() {
               <motion.div 
                 initial={{ opacity: 1 }}
                 animate={{ opacity: 0 }}
-                transition={{ duration: 1.5, delay: 0.5 }}
+                transition={{ duration: 1, delay: 0.3 }}
                 className="absolute inset-0 bg-[#4a5568] z-[100] pointer-events-none"
               />
 
@@ -2138,7 +2145,7 @@ export default function App() {
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 2, delay: 1.5 }}
+                transition={{ duration: 1.5, delay: 1 }}
                 className="absolute inset-0 flex items-center justify-center"
               >
                 {[...Array(20)].map((_, i) => {
@@ -2383,9 +2390,9 @@ export default function App() {
                     opacity: (currentEncounterIdx === 9 && gameState === 'journey') ? [0, 1] : 1
                   }}
                   transition={{ 
-                    duration: 1.2, 
+                    duration: 1, 
                     ease: "easeInOut",
-                    opacity: { delay: (currentEncounterIdx === 9 && gameState === 'journey') ? 1 : 0, duration: 1 }
+                    opacity: { delay: (currentEncounterIdx === 9 && gameState === 'journey') ? 0.8 : 0, duration: 1 }
                   }}
                   className="flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2 relative group z-10"
                 >
@@ -2647,7 +2654,7 @@ export default function App() {
                         transition={{ 
                           duration: 1.5, 
                           ease: "easeInOut",
-                          opacity: { delay: (currentEncounterIdx === 9 && gameState === 'journey') ? 2.5 : 0, duration: 1.5 }
+                          opacity: { delay: (currentEncounterIdx === 9 && gameState === 'journey') ? 1.2 : 0, duration: 1.2 }
                         }}
                         className={`w-5 h-20 sm:w-7 sm:h-26 md:w-10 md:h-36 ${currentEncounterIdx === 8 ? 'backdrop-blur-[2px]' : 'backdrop-blur-md'} rounded-full border relative group-hover:border-blue-300/50 transition-colors`}
                       >
