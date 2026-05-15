@@ -116,7 +116,7 @@ export const ENCOUNTERS: Encounter[] = [
       text: "Una lonza, un leone e una ____ mi facevan paura e mi spingevano indietro.",
       missingWord: "lupa",
       options: ["lupa", "tigre", "bestia", "ombra"],
-      simplified: "Sulla montagna incontro tre animali feroci: una lonza, un leone e una lupa spaventosa.",
+      simplified: "Sulla montagna incontro tre animali feroci:\nuna lonza, un leone e una lupa spaventosa",
       aacSequence: ["leopard", "lion", "wolf", "fear"]
     },
     background: "from-[#1e3a1e] via-[#0a1a0a] to-black"
@@ -196,7 +196,7 @@ export const ENCOUNTERS: Encounter[] = [
       text: "non ragioniam di lor, ma guarda e ____",
       missingWord: "passa",
       options: ["passa", "vai", "corri", "guarda"],
-      simplified: "Non parliamo di queste persone che non hanno mai scelto, guarda e vai avanti.",
+      simplified: "Non parliamo di queste persone che non hanno scelto,\nguarda e vai avanti",
       aacSequence: ["sad", "people", "no_one"]
     },
     background: "from-red-950 to-stone-900"

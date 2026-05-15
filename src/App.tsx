@@ -3082,7 +3082,7 @@ export default function App() {
         </div>
 
         {/* Bottom Bar / Subtitles */}
-        <div className={`flex flex-col items-center gap-4 md:gap-6 ${gameState === 'home' ? 'p-0' : 'p-4 md:p-12'}`}>
+        <div className={`flex flex-col items-center gap-4 md:gap-6 ${gameState === 'home' ? 'p-0' : 'p-2 md:p-6'}`}>
           <AnimatePresence mode="wait">
             {gameState === 'journey' && (
               <motion.div 
@@ -3090,59 +3090,83 @@ export default function App() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="text-center max-w-2xl px-4"
+                className="text-center max-w-3xl px-4 relative mb-1 sm:mb-2 md:mb-4"
               >
-                <div className="flex flex-col items-center gap-2 md:gap-4 mb-4 md:mb-6">
-                  <div className="flex items-center justify-center gap-3 md:gap-4">
-                    <p className="text-white/80 font-serif italic text-base md:text-lg whitespace-pre-line leading-relaxed">
-                      {currentEncounter.description}
-                    </p>
-                    <motion.button 
-                      whileHover={journeyCanReplay ? { scale: 1.1, backgroundColor: 'rgba(255,255,255,0.2)' } : {}}
-                      whileTap={journeyCanReplay ? { scale: 0.9 } : {}}
-                      onClick={() => {
-                        console.log("Journey: Button clicked, journeyCanReplay:", journeyCanReplay);
-                        if (!journeyCanReplay) {
-                          // Interrupt
-                          stop();
-                          if (narrationTimeoutRef.current) {
-                            clearTimeout(narrationTimeoutRef.current);
-                            narrationTimeoutRef.current = null;
+                <div className="flex flex-col items-center gap-2 md:gap-4">
+                  <div className="flex items-end justify-center gap-4 md:gap-8">
+                    <div className="w-full max-w-xl min-h-[4.5em] md:min-h-[5.5em] flex flex-col justify-end text-center pb-1 md:pb-2">
+                      <p className="text-white/80 font-serif italic text-base md:text-lg whitespace-pre-line leading-tight sm:leading-relaxed">
+                        {isSimplified ? currentEncounter.verse.simplified : currentEncounter.description}
+                      </p>
+                    </div>
+                    <div className="flex items-end gap-4 md:gap-6 min-h-[4.5em] md:min-h-[5.5em] pb-1 md:pb-2">
+                      <motion.button 
+                        whileHover={journeyCanReplay ? { scale: 1.1, backgroundColor: 'rgba(255,255,255,0.2)' } : {}}
+                        whileTap={journeyCanReplay ? { scale: 0.9 } : {}}
+                        onClick={() => {
+                          console.log("Journey: Button clicked, journeyCanReplay:", journeyCanReplay);
+                          if (!journeyCanReplay) {
+                            // Interrupt
+                            stop();
+                            if (narrationTimeoutRef.current) {
+                              clearTimeout(narrationTimeoutRef.current);
+                              narrationTimeoutRef.current = null;
+                            }
+                            setJourneyCanReplay(true);
+                            console.log("Journey: Narration interrupted");
+                            return;
                           }
-                          setJourneyCanReplay(true);
-                          console.log("Journey: Narration interrupted");
-                          return;
-                        }
 
-                        setJourneyCanReplay(false);
-                        console.log("Journey: Starting narration immediately...");
-                        speak(currentEncounter.introduction).finally(() => {
-                          setJourneyCanReplay(true);
-                          console.log("Journey: Replay finished");
-                        });
-                      }}
-                      className={`w-8 h-8 md:w-10 md:h-10 rounded-full border flex items-center justify-center transition-all shrink-0 bg-white/20 border-white/40 text-white cursor-pointer pointer-events-auto`}
-                    >
-                      <AnimatePresence mode="wait">
-                        {!journeyCanReplay ? (
-                          <motion.div
-                            key="journey-pulsing"
-                            animate={{ opacity: [0.4, 1, 0.4] }}
-                            transition={{ repeat: Infinity, duration: 1.5 }}
-                          >
-                            <Volume2 className="w-4 h-4" />
-                          </motion.div>
-                        ) : (
-                          <motion.div
-                            key="journey-static"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                          >
-                            <Volume2 className="w-4 h-4" />
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.button>
+                          setJourneyCanReplay(false);
+                          console.log("Journey: Starting narration immediately...");
+                          const textToSpeak = isSimplified ? ENCOUNTERS[currentEncounterIdx].verse.simplified : ENCOUNTERS[currentEncounterIdx].introduction;
+                          speak(textToSpeak).finally(() => {
+                            setJourneyCanReplay(true);
+                            console.log("Journey: Replay finished");
+                          });
+                        }}
+                        className={`w-10 h-10 md:w-12 md:h-12 rounded-full border flex items-center justify-center transition-all shrink-0 bg-white/20 border-white/40 text-white cursor-pointer pointer-events-auto`}
+                      >
+                        <AnimatePresence mode="wait">
+                          {!journeyCanReplay ? (
+                            <motion.div
+                              key="journey-pulsing"
+                              animate={{ opacity: [0.4, 1, 0.4] }}
+                              transition={{ repeat: Infinity, duration: 1.5 }}
+                            >
+                              <Volume2 className="w-5 h-5" />
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              key="journey-static"
+                              initial={{ scale: 0.8, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                            >
+                              <Volume2 className="w-5 h-5" />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </motion.button>
+
+                      {isSimplified && (
+                        <div className="flex flex-col gap-2">
+                          {currentEncounter.verse.aacSequence.map(id => {
+                            const icon = AAC_ICONS[id];
+                            return (
+                              <motion.div
+                                key={id}
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                className="w-10 h-10 md:w-14 md:h-14 bg-white/10 backdrop-blur-md rounded-xl md:rounded-2xl border border-white/10 flex flex-col items-center justify-center p-1 group shadow-lg"
+                              >
+                                <span className="text-sm sm:text-lg md:text-2xl">{icon?.icon}</span>
+                                <span className="text-[5px] sm:text-[6px] md:text-[8px] text-white/40 uppercase tracking-widest font-bold text-center leading-tight">{icon?.label}</span>
+                              </motion.div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
                 <AnimatePresence>
