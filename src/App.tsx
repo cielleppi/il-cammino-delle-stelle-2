@@ -899,7 +899,9 @@ export default function App() {
       .then(res => res.json())
       .then(data => {
         setUser(data);
-        setCurrentEncounterIdx(data.current_canto || 0);
+        const savedCanto = data.current_canto || 0;
+        // Cap the index to valid range
+        setCurrentEncounterIdx(savedCanto < ENCOUNTERS.length ? savedCanto : ENCOUNTERS.length - 1);
         setLaurelLeaves(data.laurel_leaves || 0);
         setPuzzleScore(data.puzzle_score || 0);
       });
@@ -943,7 +945,7 @@ export default function App() {
     
     // Determine target state first
     let targetState: 'solved' | 'complete' = 'solved';
-    if (currentEncounterIdx !== 8 && nextIdx >= ENCOUNTERS.length) {
+    if (nextIdx >= ENCOUNTERS.length) {
       targetState = 'complete';
     }
 
@@ -966,8 +968,9 @@ export default function App() {
       }
     }
 
-    // Update UI state immediately to avoid "freezing"
-    if (currentEncounterIdx === 8) {
+    // Update UI state
+    // Exception for Limbo which has a specific environmental transition
+    if (currentEncounterIdx === 8 && targetState !== 'complete') {
       setGameState('solved');
       setLimboTransition('dissolving');
       setTimeout(() => setLimboTransition('zooming'), 1500);
@@ -992,6 +995,9 @@ export default function App() {
           body: JSON.stringify({ userId: user.id, currentCanto: nextIdx, laurelLeaves: laurelLeaves, puzzleScore: puzzleScore })
         }).catch(err => console.error("Failed to update user progress:", err));
       }
+    } else {
+      // All encounters completed! Show completion screen
+      setGameState('complete');
     }
   };
 
@@ -2124,15 +2130,15 @@ export default function App() {
               <motion.div 
                 initial={{ opacity: 1 }}
                 animate={{ opacity: 0 }}
-                transition={{ duration: 2, delay: 1 }}
-                className="absolute inset-0 bg-[#4a5568] z-[100]"
+                transition={{ duration: 1.5, delay: 0.5 }}
+                className="absolute inset-0 bg-[#4a5568] z-[100] pointer-events-none"
               />
 
               {/* Bufera Infernale - Swirling Vortex of Souls */}
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 3, delay: 3 }}
+                transition={{ duration: 2, delay: 1.5 }}
                 className="absolute inset-0 flex items-center justify-center"
               >
                 {[...Array(20)].map((_, i) => {
@@ -2172,7 +2178,7 @@ export default function App() {
               <motion.div 
                 initial={{ opacity: 0, y: 150 }}
                 animate={{ opacity: 1, y: 40 }} // Positioned lower, peeking from the bottom
-                transition={{ duration: 1.5, delay: 1.5 }}
+                transition={{ duration: 1, delay: 0.8 }}
                 className="absolute left-[8%] bottom-0 flex flex-col items-center z-20"
               >
                 <div className="relative">
@@ -2377,9 +2383,9 @@ export default function App() {
                     opacity: (currentEncounterIdx === 9 && gameState === 'journey') ? [0, 1] : 1
                   }}
                   transition={{ 
-                    duration: 1.5, 
+                    duration: 1.2, 
                     ease: "easeInOut",
-                    opacity: { delay: (currentEncounterIdx === 9 && gameState === 'journey') ? 2.5 : 0, duration: 1.5 }
+                    opacity: { delay: (currentEncounterIdx === 9 && gameState === 'journey') ? 1 : 0, duration: 1 }
                   }}
                   className="flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2 relative group z-10"
                 >
@@ -2860,11 +2866,11 @@ export default function App() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 1 }}
-              className="absolute top-4 sm:top-6 md:top-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
+              className="absolute top-16 sm:top-6 md:top-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
             >
-              <span className="text-[9px] sm:text-[11px] md:text-sm font-mono uppercase tracking-[0.4em] text-white/40 font-bold">
-                Canto {currentEncounter.canto}
-              </span>
+              <h1 className="text-[12px] sm:text-[14px] md:text-sm font-mono uppercase tracking-[0.4em] text-white/40 font-bold">
+                Canto {currentEncounter?.canto || "I"}
+              </h1>
             </motion.div>
           )}
         </AnimatePresence>

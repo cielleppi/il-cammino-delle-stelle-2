@@ -58,6 +58,7 @@ export const AAC_ICONS: Record<string, AACIcon> = {
   "mountain": { id: "mountain", label: "Salita", icon: "⛰️" },
   // Expression Icons
   "voglio": { id: "voglio", label: "Voglio", icon: "☝️" },
+  "vuole": { id: "vuole", label: "Vuole", icon: "☝️" },
   "sento": { id: "sento", label: "Sento", icon: "👂" },
   "felice": { id: "felice", label: "Felice", icon: "😊" },
   "triste": { id: "triste", label: "Triste", icon: "😢" },
@@ -80,6 +81,7 @@ export const AAC_ICONS: Record<string, AACIcon> = {
   "shadow": { id: "shadow", label: "Ombra", icon: "👤" },
   "desert": { id: "desert", label: "Deserto", icon: "🏜️" },
   "man": { id: "man", label: "Uomo", icon: "🧍" },
+  "dio": { id: "dio", label: "Dio", icon: "☁️" },
 };
 
 export const EXPRESSION_CATEGORIES = [
@@ -231,14 +233,18 @@ export const ENCOUNTERS: Encounter[] = [
     name: "Caronte",
     canto: 3,
     description: "Caron dimonio, con occhi di bragia\nloro accennando, tutte le raccoglie;\nbatte col remo qualunque s'adagia.",
+    simplifiedDescription: "Caronte ha gli occhi di fuoco e colpisce con il remo chi si ferma.",
+    puzzleHeader: "E 'l duca lui: «Caron, non ti crucciare:\nvuolsi così colà dove si puote\nciò che si vuole, e più non dimandare».",
+    puzzleHeaderSimplified: "Virgilio dice: non arrabbiarti Caronte. Dio vuole così.\nSi fa quello che vuole Dio e non fare altre domande.",
+    journeyAacSequence: ["boat", "river", "fire"],
     introduction: "Sulle rive del fiume Acheronte, un vecchio nocchiero dalle fiamme negli occhi urla alle anime. È Caronte, colui che traghetta i dannati verso l'eterna oscurità. Preparati a varcare l'acqua.",
     verse: {
       id: "v_charon",
-      text: "Caron dimonio, con occhi di bragia... batte col ____ qualunque s'adagia",
-      missingWord: "remo",
-      options: ["remo", "legno", "ferro", "fuoco"],
-      simplified: "Caronte ha gli occhi di fuoco e colpisce con il remo chi si ferma.",
-      aacSequence: ["boat", "river", "fire"]
+      text: "Con l'espressione \"dove si puote ciò che si vuole\", Virgilio si riferisce al ____",
+      missingWord: "volere di Dio",
+      options: ["volere di Dio", "potere di Caronte", "coraggio di Dante", "cammino dell'Inferno"],
+      simplified: "Virgilio dice a Caronte: Dio vuole così.\nNon fare altre domande.",
+      aacSequence: ["no", "arrabbiato", "dio", "vuole"]
     },
     background: "from-stone-900 to-red-900"
   },
