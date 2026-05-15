@@ -109,7 +109,7 @@ export const ENCOUNTERS: Encounter[] = [
     id: "three_beasts",
     name: "Le Tre Fiere",
     canto: 1,
-    description: "Una lonza leggiera, un leone superbo e una lupa insaziabile ti sbarrano la strada verso il colle luminoso, spingendoti con terrore verso l'oscurità della selva.",
+    description: "Una lonza leggera, un leone superbo e una lupa insaziabile\n ti sbarrano la strada verso il colle luminoso,\nspingendoti con terrore verso l'oscurità della selva",
     introduction: "Il cammino verso la salvezza è sbarrato da tre ostacoli insormontabili. La lussuria, la superbia e l'avarizia prendono forma in tre bestie feroci che ti circondano, spegnendo ogni speranza di risalita.",
     verse: {
       id: "v_three_beasts",

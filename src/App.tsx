@@ -246,7 +246,7 @@ const PuzzleStop = ({
             </div>
           </div>
           <h1 className="text-sm sm:text-xl md:text-2xl font-serif italic text-white mb-0 sm:mb-2 tracking-tight">{encounter.name}</h1>
-          <p className="text-white/60 leading-tight text-[8px] sm:text-xs md:text-sm max-w-xl font-light">
+          <p className="text-white/60 leading-tight text-[8px] sm:text-xs md:text-sm max-w-xl font-light whitespace-pre-line">
             {isSimplified ? encounter.verse.simplified : encounter.description}
           </p>
         </div>
