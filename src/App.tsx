@@ -934,31 +934,39 @@ export default function App() {
     stop();
     const nextIdx = currentEncounterIdx + 1;
     
-    await fetch('/api/progress', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: user.id, verseId: currentEncounter.verse.id })
-    });
-
-    if (user) {
-      await fetch('/api/user/update', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: user.id, currentCanto: currentEncounterIdx, laurelLeaves: laurelLeaves, puzzleScore: puzzleScore })
-      });
+    // Determine target state first
+    let targetState: 'solved' | 'complete' = 'solved';
+    if (currentEncounterIdx !== 8 && nextIdx >= ENCOUNTERS.length) {
+      targetState = 'complete';
     }
 
+    // Defensive check and API updates in background
+    if (user && user.id) {
+      try {
+        fetch('/api/progress', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id, verseId: currentEncounter.verse.id })
+        }).catch(err => console.error("Failed to save progress:", err));
+
+        fetch('/api/user/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id, currentCanto: currentEncounterIdx, laurelLeaves: laurelLeaves, puzzleScore: puzzleScore })
+        }).catch(err => console.error("Failed to update user:", err));
+      } catch (err) {
+        console.error("Error in handleSolve API calls:", err);
+      }
+    }
+
+    // Update UI state immediately to avoid "freezing"
     if (currentEncounterIdx === 8) {
       setGameState('solved');
       setLimboTransition('dissolving');
       setTimeout(() => setLimboTransition('zooming'), 1500);
       setTimeout(() => setLimboTransition('complete'), 4500);
     } else {
-      if (nextIdx < ENCOUNTERS.length) {
-        setGameState('solved');
-      } else {
-        setGameState('complete');
-      }
+      setGameState(targetState);
     }
   };
 
@@ -969,11 +977,14 @@ export default function App() {
       setCurrentEncounterIdx(nextIdx);
       setGameState('journey');
       setLimboTransition('none'); // Reset transition state
-      await fetch('/api/user/update', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: user.id, currentCanto: nextIdx, laurelLeaves: laurelLeaves, puzzleScore: puzzleScore })
-      });
+      
+      if (user && user.id) {
+        fetch('/api/user/update', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: user.id, currentCanto: nextIdx, laurelLeaves: laurelLeaves, puzzleScore: puzzleScore })
+        }).catch(err => console.error("Failed to update user progress:", err));
+      }
     }
   };
 
@@ -999,12 +1010,12 @@ export default function App() {
     if (activeVeltro) {
       const newLeaves = laurelLeaves + activeVeltro.reward;
       setLaurelLeaves(newLeaves);
-      if (user) {
-        await fetch('/api/user/update', {
+      if (user && user.id) {
+        fetch('/api/user/update', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ userId: user.id, currentCanto: currentEncounterIdx, laurelLeaves: newLeaves, puzzleScore: puzzleScore })
-        });
+        }).catch(err => console.error("Failed to update user rewards:", err));
       }
     }
     setActiveVeltro(null);
