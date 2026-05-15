@@ -620,7 +620,7 @@ const InfernoMap = ({ currentIdx, encounters, onSelectCanto }: { currentIdx: num
             
             const getPos = (idx: number) => {
               const id = encounters[idx].id;
-              const selvaIds = ["dark_wood", "lonza", "leone", "lupa", "virgil_appears", "dante_doubt", "beatrice_mission", "gates_of_hell"];
+              const selvaIds = ["dark_wood", "three_beasts", "virgil_appears", "dante_doubt", "beatrice_mission", "gates_of_hell"];
               
               if (selvaIds.includes(id)) {
                 const count = selvaIds.length;
@@ -658,7 +658,7 @@ const InfernoMap = ({ currentIdx, encounters, onSelectCanto }: { currentIdx: num
           {encounters.map((encounter, i) => {
             const getPos = (idx: number) => {
               const id = encounters[idx].id;
-              const selvaIds = ["dark_wood", "lonza", "leone", "lupa", "virgil_appears", "dante_doubt", "beatrice_mission", "gates_of_hell"];
+              const selvaIds = ["dark_wood", "three_beasts", "virgil_appears", "dante_doubt", "beatrice_mission", "gates_of_hell"];
               
               if (selvaIds.includes(id)) {
                 const count = selvaIds.length;
@@ -679,7 +679,7 @@ const InfernoMap = ({ currentIdx, encounters, onSelectCanto }: { currentIdx: num
             const isCompleted = i < currentIdx;
             const isCurrent = i === currentIdx;
 
-            const isSelva = ["dark_wood", "lonza", "leone", "lupa", "virgil_appears", "dante_doubt", "beatrice_mission", "gates_of_hell"].includes(encounter.id);
+            const isSelva = ["dark_wood", "three_beasts", "virgil_appears", "dante_doubt", "beatrice_mission", "gates_of_hell"].includes(encounter.id);
             const labelPosition = isSelva ? (i % 2 === 0 ? 'bottom' : 'top') : 'right';
 
             return (
@@ -817,8 +817,8 @@ export default function App() {
     if (gameState === 'journey' && currentEncounter && lastPlayedCantoRef.current !== currentEncounterIdx) {
       setJourneyCanReplay(false);
       
-      // Virgil appearance logic for Canto 1, CP 5
-      if (currentEncounterIdx === 4) {
+      // Virgil appearance logic for Canto 1, CP 2
+      if (currentEncounterIdx === 2) {
         setShowVirgil(false);
         setShowVirgilName(false);
         setShowSpiritualGlow(false);
@@ -842,7 +842,7 @@ export default function App() {
             }, 2500);
           }, 2000);
         }, 1000);
-      } else if (currentEncounterIdx === 6) {
+      } else if (currentEncounterIdx === 4) {
         // Beatrice Mission logic
         setShowVirgil(true);
         setShowVirgilName(true);
@@ -854,8 +854,8 @@ export default function App() {
           // Keep it on for this screen as it's a divine mission
         }, 1000);
       } else {
-        setShowVirgil(currentEncounterIdx > 4);
-        setShowVirgilName(currentEncounterIdx > 4);
+        setShowVirgil(currentEncounterIdx >= 2);
+        setShowVirgilName(currentEncounterIdx >= 2);
         setShowSpiritualGlow(false);
         setForestDissipation(false);
         setParticlesRadial(false);
@@ -948,7 +948,7 @@ export default function App() {
       });
     }
 
-    if (currentEncounterIdx === 10) {
+    if (currentEncounterIdx === 8) {
       setGameState('solved');
       setLimboTransition('dissolving');
       setTimeout(() => setLimboTransition('zooming'), 1500);
@@ -1025,8 +1025,8 @@ export default function App() {
       
       {gameState !== 'landing' && (
         <>
-          {/* Divine Providence Light - Visible from Selva to Beatrice (Indices 0-6) */}
-          {currentEncounterIdx <= 6 && (
+          {/* Divine Providence Light - Visible from Selva to Beatrice (Indices 0-4) */}
+          {currentEncounterIdx <= 4 && (
             <div className="absolute inset-0 pointer-events-none z-10">
               <motion.div 
                 key="divine-providence-light"
@@ -1037,8 +1037,8 @@ export default function App() {
                   x: "-50%"
                 }}
                 animate={{
-                  top: currentEncounterIdx === 6 ? "30%" : "12%",
-                  scale: currentEncounterIdx === 6 ? 1 : 0.4,
+                  top: currentEncounterIdx === 4 ? "30%" : "12%",
+                  scale: currentEncounterIdx === 4 ? 1 : 0.4,
                   left: "50%",
                   x: "-50%",
                 }}
@@ -1050,14 +1050,14 @@ export default function App() {
               >
                 {/* Halo Effect (Soft Background Glow) - Intensity based on Dante's state */}
                 <motion.div
-                  animate={currentEncounterIdx === 6 ? {
+                  animate={currentEncounterIdx === 4 ? {
                     scale: [1.2, 1.6, 1.3, 1.8, 1.2],
                     opacity: [0.1, 0.7, 0.15, 0.8, 0.1],
                   } : {
                     scale: [1.2, 1.4, 1.2],
                     opacity: [0.05, 0.15, 0.05], // Muted intensity for Selva
                   }}
-                  transition={currentEncounterIdx === 6 ? {
+                  transition={currentEncounterIdx === 4 ? {
                     duration: 4,
                     repeat: Infinity,
                     ease: "easeInOut",
@@ -1072,14 +1072,14 @@ export default function App() {
 
                 {/* Interactive Glow (Middle Layer) - Intensity based on Dante's state */}
                 <motion.div
-                  animate={currentEncounterIdx === 6 ? {
+                  animate={currentEncounterIdx === 4 ? {
                     scale: [1, 1.4, 1.1, 1.5, 1],
                     opacity: [0.3, 0.8, 0.4, 0.9, 0.3],
                   } : {
                     scale: [1, 1.2, 1],
                     opacity: [0.15, 0.3, 0.15], // Muted intensity for Selva
                   }}
-                  transition={currentEncounterIdx === 6 ? {
+                  transition={currentEncounterIdx === 4 ? {
                     duration: 3,
                     repeat: Infinity,
                     ease: "easeInOut",
@@ -1366,9 +1366,9 @@ export default function App() {
 
       {/* Characters */}
       <div className="absolute inset-0 flex items-center justify-center z-20">
-        {/* Gates of Hell (Idx 7) */}
+        {/* Gates of Hell (Idx 5) */}
         <AnimatePresence mode="wait">
-          {currentEncounterIdx === 7 && (
+          {currentEncounterIdx === 5 && (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -1716,9 +1716,9 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Ignavi (Idx 8) - Moved here to occupy full screen width without clipping */}
+        {/* Ignavi (Idx 6) - Moved here to occupy full screen width without clipping */}
         <AnimatePresence>
-          {currentEncounterIdx === 8 && (
+          {currentEncounterIdx === 6 && (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -1833,10 +1833,10 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Limbo (Idx 10) - The Noble Castle and the Great Poets */}
+        {/* Limbo (Idx 8) - The Noble Castle and the Great Poets */}
         {/* Positioned here to allow full-screen environmental effects */}
         <AnimatePresence>
-          {currentEncounterIdx === 10 && (
+          {currentEncounterIdx === 8 && (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -2093,9 +2093,9 @@ export default function App() {
         </AnimatePresence>
 
 
-        {/* Paolo e Francesca (Idx 11) - The Bufera Infernale and the Tragic Lovers */}
+        {/* Paolo e Francesca (Idx 9) - The Bufera Infernale and the Tragic Lovers */}
         <AnimatePresence>
-          {currentEncounterIdx === 11 && (
+          {currentEncounterIdx === 9 && (
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -2332,7 +2332,7 @@ export default function App() {
                 animate={{ 
                   opacity: 1,
                   y: [0, -10, 0],
-                  x: (currentEncounterIdx >= 1 && currentEncounterIdx <= 3 && gameState !== 'solved') 
+                  x: (currentEncounterIdx === 1 && gameState !== 'solved') 
                     ? "var(--encounter-shift)" 
                     : (gameState === 'journey' ? [0, 5, 0] : 0)
                 }}
@@ -2340,7 +2340,7 @@ export default function App() {
                 transition={{ 
                   opacity: { duration: 0.5 },
                   y: { duration: 4, repeat: Infinity, ease: "linear" },
-                  x: (currentEncounterIdx >= 1 && currentEncounterIdx <= 3 && gameState !== 'solved')
+                  x: (currentEncounterIdx === 1 && gameState !== 'solved')
                     ? { duration: 0.5, ease: "easeInOut" }
                     : { duration: 4, repeat: Infinity, ease: "linear" }
                 }}
@@ -2355,22 +2355,22 @@ export default function App() {
                 {/* Dante */}
                 <motion.div 
                   animate={{ 
-                    x: (showVirgil && currentEncounterIdx >= 4) ? -60 : 0,
-                    opacity: (currentEncounterIdx === 11 && gameState === 'journey') ? [0, 1] : 1
+                    x: (showVirgil && currentEncounterIdx >= 2) ? -60 : 0,
+                    opacity: (currentEncounterIdx === 9 && gameState === 'journey') ? [0, 1] : 1
                   }}
                   transition={{ 
                     duration: 1.5, 
                     ease: "easeInOut",
-                    opacity: { delay: (currentEncounterIdx === 11 && gameState === 'journey') ? 2.5 : 0, duration: 1.5 }
+                    opacity: { delay: (currentEncounterIdx === 9 && gameState === 'journey') ? 2.5 : 0, duration: 1.5 }
                   }}
                   className="flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2 relative group z-10"
                 >
                   <motion.div
                     animate={{ 
-                      scale: (currentEncounterIdx === 5 || (currentEncounterIdx === 6 && !showSpiritualGlow)) ? 0.85 : 1,
-                      opacity: (currentEncounterIdx === 5 || (currentEncounterIdx === 6 && !showSpiritualGlow)) ? 0.5 : 1,
-                      y: (currentEncounterIdx === 5 || (currentEncounterIdx === 6 && !showSpiritualGlow)) ? 15 : 0,
-                      filter: (currentEncounterIdx === 5 || (currentEncounterIdx === 6 && !showSpiritualGlow)) ? "blur(3px)" : "blur(0px)"
+                      scale: (currentEncounterIdx === 3 || (currentEncounterIdx === 4 && !showSpiritualGlow)) ? 0.85 : 1,
+                      opacity: (currentEncounterIdx === 3 || (currentEncounterIdx === 4 && !showSpiritualGlow)) ? 0.5 : 1,
+                      y: (currentEncounterIdx === 3 || (currentEncounterIdx === 4 && !showSpiritualGlow)) ? 15 : 0,
+                      filter: (currentEncounterIdx === 3 || (currentEncounterIdx === 4 && !showSpiritualGlow)) ? "blur(3px)" : "blur(0px)"
                     }}
                     transition={{ 
                       duration: 1.5, 
@@ -2414,15 +2414,15 @@ export default function App() {
                     </AnimatePresence>
                     <motion.div 
                       animate={{
-                        backgroundColor: currentEncounterIdx === 5 ? "rgba(71, 85, 105, 0.3)" : "rgba(127, 29, 29, 0.4)",
-                        borderColor: currentEncounterIdx === 5 ? "rgba(148, 163, 184, 0.1)" : "rgba(239, 68, 68, 0.2)",
-                        boxShadow: currentEncounterIdx === 5 ? "0 0 40px rgba(0,0,0,0.6)" : "none"
+                        backgroundColor: currentEncounterIdx === 3 ? "rgba(71, 85, 105, 0.3)" : "rgba(127, 29, 29, 0.4)",
+                        borderColor: currentEncounterIdx === 3 ? "rgba(148, 163, 184, 0.1)" : "rgba(239, 68, 68, 0.2)",
+                        boxShadow: currentEncounterIdx === 3 ? "0 0 40px rgba(0,0,0,0.6)" : "none"
                       }}
                       transition={{ duration: 1.5 }}
                       className="w-6 h-18 sm:w-8 sm:h-24 md:w-12 md:h-32 backdrop-blur-sm rounded-full border relative group-hover:border-red-500/50 transition-colors z-10 overflow-hidden"
                     >
                       {/* Restless Internal Commotion Wave */}
-                      {currentEncounterIdx === 5 && (
+                      {currentEncounterIdx === 3 && (
                         <motion.div 
                           animate={{ 
                             y: ["100%", "-100%"],
@@ -2444,13 +2444,13 @@ export default function App() {
 
                       <motion.div 
                         animate={
-                          currentEncounterIdx === 5 ? {
+                          currentEncounterIdx === 3 ? {
                             borderColor: ["rgba(148, 163, 184, 0)", "rgba(148, 163, 184, 1)", "rgba(148, 163, 184, 0)"],
                             scale: [1, 1.4, 0.9, 1.2, 1],
                             boxShadow: "none",
                             backgroundColor: "rgba(71, 85, 105, 0.1)",
                             filter: "blur(2px)"
-                          } : currentEncounterIdx === 6 ? (
+                          } : currentEncounterIdx === 4 ? (
                             showSpiritualGlow ? {
                               borderColor: ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)", "rgba(255, 255, 255, 0)"],
                               scale: [1, 1.3, 1],
@@ -2477,14 +2477,14 @@ export default function App() {
                           }
                         }
                         transition={{ 
-                          duration: (currentEncounterIdx === 5 || (currentEncounterIdx === 6 && !showSpiritualGlow)) ? 3 : 1.5, 
-                          repeat: (currentEncounterIdx === 5 || (currentEncounterIdx === 6 && !showSpiritualGlow)) ? Infinity : 0, 
+                          duration: (currentEncounterIdx === 3 || (currentEncounterIdx === 4 && !showSpiritualGlow)) ? 3 : 1.5, 
+                          repeat: (currentEncounterIdx === 3 || (currentEncounterIdx === 4 && !showSpiritualGlow)) ? Infinity : 0, 
                           ease: "easeInOut",
-                          times: (currentEncounterIdx === 5 || (currentEncounterIdx === 6 && !showSpiritualGlow)) ? [0, 0.15, 0.4, 0.75, 1] : (currentEncounterIdx === 6 && showSpiritualGlow ? [0, 0.5, 1] : undefined)
+                          times: (currentEncounterIdx === 3 || (currentEncounterIdx === 4 && !showSpiritualGlow)) ? [0, 0.15, 0.4, 0.75, 1] : (currentEncounterIdx === 4 && showSpiritualGlow ? [0, 0.5, 1] : undefined)
                         }}
                         className={`absolute top-1.5 sm:top-2 left-1/2 -translate-x-1/2 w-3 h-3 sm:w-4 sm:h-4 md:w-6 md:h-6 rounded-full border-2 transition-colors ${
-                          (currentEncounterIdx === 5 || (currentEncounterIdx === 6 && !showSpiritualGlow)) ? 'border-slate-400/60' : 
-                          (currentEncounterIdx === 6 && showSpiritualGlow) ? 'border-white/60' : 
+                          (currentEncounterIdx === 3 || (currentEncounterIdx === 4 && !showSpiritualGlow)) ? 'border-slate-400/60' : 
+                          (currentEncounterIdx === 4 && showSpiritualGlow) ? 'border-white/60' : 
                           'border-transparent'
                         }`} 
                       />
@@ -2492,7 +2492,7 @@ export default function App() {
                   </motion.div>
                   <motion.span 
                     animate={{ 
-                      color: (currentEncounterIdx === 5 || (currentEncounterIdx === 6 && !showSpiritualGlow)) ? "rgba(156, 163, 175, 1)" : "rgba(248, 113, 113, 1)" 
+                      color: (currentEncounterIdx === 3 || (currentEncounterIdx === 4 && !showSpiritualGlow)) ? "rgba(156, 163, 175, 1)" : "rgba(248, 113, 113, 1)" 
                     }}
                     transition={{ duration: 1.5 }}
                     className="text-[7px] sm:text-[8px] md:text-[10px] uppercase tracking-widest font-bold transition-colors"
@@ -2501,23 +2501,23 @@ export default function App() {
                   </motion.span>
                 </motion.div>
 
-                {/* Lonza (Idx 1+) - Positioned absolutely to Dante's right */}
+                {/* Lonza (Idx 1) - Positioned absolutely to Dante's right */}
                 <AnimatePresence>
                   {currentEncounterIdx >= 1 && (
                     <motion.div 
                       key="lonza"
                       initial={{ opacity: 0, scale: 0.8, x: 100 }}
                       animate={{ 
-                        opacity: currentEncounterIdx >= 4 ? 0 : 1, 
-                        scale: currentEncounterIdx >= 4 ? 0 : ((currentEncounterIdx === 1 && gameState !== 'solved') ? 1 : (currentEncounterIdx === 1 ? [1, 1, 0.3] : 0.3)),
-                        x: (currentEncounterIdx === 1 && gameState !== 'solved') ? 0 : (currentEncounterIdx === 1 ? [0, -600, -400] : -400),
-                        y: (currentEncounterIdx === 1 && gameState !== 'solved') ? 0 : (currentEncounterIdx === 1 ? [0, 0, -180] : -180),
+                        opacity: currentEncounterIdx >= 2 ? 0 : 1, 
+                        scale: currentEncounterIdx >= 2 ? 0 : ((currentEncounterIdx === 1 && gameState !== 'solved') ? 1 : (currentEncounterIdx === 1 ? [1, 1, 0.3] : 0.3)),
+                        x: (currentEncounterIdx === 1 && gameState !== 'solved') ? -20 : (currentEncounterIdx === 1 ? [-20, -600, -400] : -400),
+                        y: (currentEncounterIdx === 1 && gameState !== 'solved') ? -70 : (currentEncounterIdx === 1 ? [-70, -70, -180] : -180),
                         filter: (currentEncounterIdx === 1 && gameState !== 'solved') ? 'blur(0px)' : (currentEncounterIdx === 1 ? ['blur(0px)', 'blur(0px)', 'blur(3px)'] : 'blur(3px)'),
                       }}
                       exit={{ opacity: 0, scale: 0 }}
                       transition={{
-                        opacity: { duration: currentEncounterIdx >= 4 ? 2 : 0.5, ease: "easeOut" },
-                        scale: { duration: currentEncounterIdx >= 4 ? 2 : ((currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5), times: [0, 0.4, 1], ease: "easeOut" },
+                        opacity: { duration: currentEncounterIdx >= 2 ? 2 : 0.5, ease: "easeOut" },
+                        scale: { duration: currentEncounterIdx >= 2 ? 2 : ((currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5), times: [0, 0.4, 1], ease: "easeOut" },
                         x: { duration: (currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 1 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
                         y: { duration: (currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 1 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
                         filter: { duration: (currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 1 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
@@ -2532,76 +2532,77 @@ export default function App() {
                   )}
                 </AnimatePresence>
 
-                {/* Leone (Idx 2+) */}
+                {/* Leone (Idx 1) */}
                 <AnimatePresence>
-                  {currentEncounterIdx >= 2 && (
+                  {currentEncounterIdx >= 1 && (
                     <motion.div 
                       key="leone"
                       initial={{ opacity: 0, scale: 0.8, x: 100 }}
                       animate={{ 
-                        opacity: currentEncounterIdx >= 4 ? 0 : 1, 
-                        scale: currentEncounterIdx >= 4 ? 0 : ((currentEncounterIdx === 2 && gameState !== 'solved') ? 1 : (currentEncounterIdx === 2 ? [1, 1, 0.35] : 0.35)),
-                        x: (currentEncounterIdx === 2 && gameState !== 'solved') ? 0 : (currentEncounterIdx === 2 ? [0, -550, -350] : -350),
-                        y: (currentEncounterIdx === 2 && gameState !== 'solved') ? 0 : (currentEncounterIdx === 2 ? [0, 0, -170] : -170),
-                        filter: (currentEncounterIdx === 2 && gameState !== 'solved') ? 'blur(0px)' : (currentEncounterIdx === 2 ? ['blur(0px)', 'blur(0px)', 'blur(3px)'] : 'blur(3px)'),
+                        opacity: currentEncounterIdx >= 2 ? 0 : 1, 
+                        scale: currentEncounterIdx >= 2 ? 0 : ((currentEncounterIdx === 1 && gameState !== 'solved') ? 1.2 : (currentEncounterIdx === 1 ? [1.2, 1.2, 0.35] : 0.35)),
+                        x: (currentEncounterIdx === 1 && gameState !== 'solved') ? 80 : (currentEncounterIdx === 1 ? [80, -550, -350] : -350),
+                        y: (currentEncounterIdx === 1 && gameState !== 'solved') ? 0 : (currentEncounterIdx === 1 ? [0, 0, -170] : -170),
+                        filter: (currentEncounterIdx === 1 && gameState !== 'solved') ? 'blur(0px)' : (currentEncounterIdx === 1 ? ['blur(0px)', 'blur(0px)', 'blur(3px)'] : 'blur(3px)'),
                       }}
                       exit={{ opacity: 0, scale: 0 }}
                       transition={{
-                        opacity: { duration: currentEncounterIdx >= 4 ? 2 : 0.5, ease: "easeOut" },
-                        scale: { duration: currentEncounterIdx >= 4 ? 2 : ((currentEncounterIdx === 2 && gameState === 'solved') ? 18 : 1.5), times: [0, 0.4, 1], ease: "easeOut" },
-                        x: { duration: (currentEncounterIdx === 2 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 2 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
-                        y: { duration: (currentEncounterIdx === 2 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 2 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
-                        filter: { duration: (currentEncounterIdx === 2 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 2 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
+                        opacity: { duration: currentEncounterIdx >= 2 ? 2 : 0.5, ease: "easeOut" },
+                        scale: { duration: currentEncounterIdx >= 2 ? 2 : ((currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5), times: [0, 0.4, 1], ease: "easeOut" },
+                        x: { duration: (currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 1 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
+                        y: { duration: (currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 1 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
+                        filter: { duration: (currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 1 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
                       }}
-                      className={`absolute left-full ml-6 md:ml-12 flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2 group z-0 ${(currentEncounterIdx > 2 || (currentEncounterIdx === 2 && gameState === 'solved')) ? 'pointer-events-none' : ''}`}
+                      className={`absolute left-full ml-6 md:ml-12 flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2 group z-0 ${(currentEncounterIdx > 1 || (currentEncounterIdx === 1 && gameState === 'solved')) ? 'pointer-events-none' : ''}`}
                     >
                       <div className="w-5 h-13 sm:w-7 sm:h-17 md:w-10 md:h-24 bg-orange-900/40 backdrop-blur-sm rounded-full border border-orange-500/20 relative group-hover:border-orange-500/50 transition-colors">
                         <div className="absolute top-1.5 sm:top-2 left-1/2 -translate-x-1/2 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 md:w-5 md:h-5 bg-orange-200/20 rounded-full" />
                       </div>
-                      <span className={`text-[7px] sm:text-[8px] md:text-[10px] uppercase tracking-widest text-orange-400 font-bold group-hover:text-orange-300 transition-colors ${(currentEncounterIdx > 2 || (currentEncounterIdx === 2 && gameState === 'solved')) ? 'opacity-0' : 'opacity-100'}`}>Leone</span>
+                      <span className={`text-[7px] sm:text-[8px] md:text-[10px] uppercase tracking-widest text-orange-400 font-bold group-hover:text-orange-300 transition-colors ${(currentEncounterIdx > 1 || (currentEncounterIdx === 1 && gameState === 'solved')) ? 'opacity-0' : 'opacity-100'}`}>Leone</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
-                {/* Lupa (Idx 3+) */}
+                {/* Lupa (Idx 1) */}
                 <AnimatePresence>
-                  {currentEncounterIdx >= 3 && (
+                  {currentEncounterIdx >= 1 && (
                     <motion.div 
                       key="lupa"
                       initial={{ opacity: 0, scale: 0.8, x: 100 }}
                       animate={{ 
-                        opacity: currentEncounterIdx >= 4 ? 0 : 1, 
-                        scale: currentEncounterIdx >= 4 ? 0 : ((currentEncounterIdx === 3 && gameState !== 'solved') ? 1 : (currentEncounterIdx === 3 ? [1, 1, 0.32] : 0.32)),
-                        x: (currentEncounterIdx === 3 && gameState !== 'solved') ? 0 : (currentEncounterIdx === 3 ? [0, -500, -300] : -300),
-                        y: (currentEncounterIdx === 3 && gameState !== 'solved') ? 0 : (currentEncounterIdx === 3 ? [0, 0, -160] : -160),
-                        filter: (currentEncounterIdx === 3 && gameState !== 'solved') ? 'blur(0px)' : (currentEncounterIdx === 3 ? ['blur(0px)', 'blur(0px)', 'blur(3px)'] : 'blur(3px)'),
+                        opacity: currentEncounterIdx >= 2 ? 0 : 1, 
+                        scale: currentEncounterIdx >= 2 ? 0 : ((currentEncounterIdx === 1 && gameState !== 'solved') ? 0.9 : (currentEncounterIdx === 1 ? [0.9, 0.9, 0.32] : 0.32)),
+                        x: (currentEncounterIdx === 1 && gameState !== 'solved') ? -20 : (currentEncounterIdx === 1 ? [-20, -500, -300] : -300),
+                        y: (currentEncounterIdx === 1 && gameState !== 'solved') ? 70 : (currentEncounterIdx === 1 ? [70, 70, -160] : -160),
+                        filter: (currentEncounterIdx === 1 && gameState !== 'solved') ? 'blur(0px)' : (currentEncounterIdx === 1 ? ['blur(0px)', 'blur(0px)', 'blur(3px)'] : 'blur(3px)'),
                       }}
                       exit={{ opacity: 0, scale: 0 }}
                       transition={{
-                        opacity: { duration: currentEncounterIdx >= 4 ? 2 : 0.5, ease: "easeOut" },
-                        scale: { duration: currentEncounterIdx >= 4 ? 2 : ((currentEncounterIdx === 3 && gameState === 'solved') ? 18 : 1.5), times: [0, 0.4, 1], ease: "easeOut" },
-                        x: { duration: (currentEncounterIdx === 3 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 3 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
-                        y: { duration: (currentEncounterIdx === 3 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 3 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
-                        filter: { duration: (currentEncounterIdx === 3 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 3 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
+                        opacity: { duration: currentEncounterIdx >= 2 ? 2 : 0.5, ease: "easeOut" },
+                        scale: { duration: currentEncounterIdx >= 2 ? 2 : ((currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5), times: [0, 0.4, 1], ease: "easeOut" },
+                        x: { duration: (currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 1 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
+                        y: { duration: (currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 1 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
+                        filter: { duration: (currentEncounterIdx === 1 && gameState === 'solved') ? 18 : 1.5, times: [0, 0.4, 1], ease: (currentEncounterIdx === 1 && gameState === 'solved') ? ["linear", "easeInOut"] : "easeOut" },
                       }}
-                      className={`absolute left-full ml-6 md:ml-12 flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2 group z-0 ${(currentEncounterIdx > 3 || (currentEncounterIdx === 3 && gameState === 'solved')) ? 'pointer-events-none' : ''}`}
+                      className={`absolute left-full ml-6 md:ml-12 flex flex-col items-center gap-1 sm:gap-1.5 md:gap-2 group z-0 ${(currentEncounterIdx > 1 || (currentEncounterIdx === 1 && gameState === 'solved')) ? 'pointer-events-none' : ''}`}
                     >
                       <div className="w-4 h-12 sm:w-6 sm:h-16 md:w-9 md:h-22 bg-slate-900/40 backdrop-blur-sm rounded-full border border-slate-500/20 relative group-hover:border-slate-500/50 transition-colors">
                         <div className="absolute top-1.5 sm:top-2 left-1/2 -translate-x-1/2 w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 bg-slate-200/20 rounded-full" />
                       </div>
-                      <span className={`text-[7px] sm:text-[8px] md:text-[10px] uppercase tracking-widest text-slate-400 font-bold group-hover:text-slate-300 transition-colors ${(currentEncounterIdx > 3 || (currentEncounterIdx === 3 && gameState === 'solved')) ? 'opacity-0' : 'opacity-100'}`}>Lupa</span>
+                      <span className={`text-[7px] sm:text-[8px] md:text-[10px] uppercase tracking-widest text-slate-400 font-bold group-hover:text-slate-300 transition-colors ${(currentEncounterIdx > 1 || (currentEncounterIdx === 1 && gameState === 'solved')) ? 'opacity-0' : 'opacity-100'}`}>Lupa</span>
                     </motion.div>
                   )}
                 </AnimatePresence>
 
                 {/* Virgil */}
                 <AnimatePresence>
-                  {showVirgil && (currentEncounterIdx >= 4) && (
+                  {showVirgil && (currentEncounterIdx >= 2) && (
                     <motion.div 
+                      key="virgil"
                       initial={{ opacity: 0, x: 0, scale: 0.4 }}
                       animate={{ 
                         opacity: 1, 
-                        x: (showVirgil && currentEncounterIdx >= 4) ? 60 : 0,
+                        x: (showVirgil && currentEncounterIdx >= 2) ? 60 : 0,
                         scale: 1
                       }}
                       exit={{ opacity: 0, x: 0, scale: 0.4 }}
@@ -2614,24 +2615,24 @@ export default function App() {
                     >
                       <motion.div 
                         animate={{ 
-                          backgroundColor: currentEncounterIdx === 10 ? "rgba(226, 232, 240, 0.1)" : "rgba(30, 58, 138, 0.2)",
-                          borderColor: currentEncounterIdx === 10 ? "rgba(255, 255, 255, 0.05)" : "rgba(147, 197, 253, 0.5)",
-                          filter: currentEncounterIdx === 10 ? "none" : "grayscale(0) opacity(1)",
-                          opacity: (currentEncounterIdx === 11 && gameState === 'journey') ? [0, 1] : 1
+                          backgroundColor: currentEncounterIdx === 8 ? "rgba(226, 232, 240, 0.1)" : "rgba(30, 58, 138, 0.2)",
+                          borderColor: currentEncounterIdx === 8 ? "rgba(255, 255, 255, 0.05)" : "rgba(147, 197, 253, 0.5)",
+                          filter: currentEncounterIdx === 8 ? "none" : "grayscale(0) opacity(1)",
+                          opacity: (currentEncounterIdx === 9 && gameState === 'journey') ? [0, 1] : 1
                         }}
                         transition={{ 
                           duration: 1.5, 
                           ease: "easeInOut",
-                          opacity: { delay: (currentEncounterIdx === 11 && gameState === 'journey') ? 2.5 : 0, duration: 1.5 }
+                          opacity: { delay: (currentEncounterIdx === 9 && gameState === 'journey') ? 2.5 : 0, duration: 1.5 }
                         }}
-                        className={`w-5 h-20 sm:w-7 sm:h-26 md:w-10 md:h-36 ${currentEncounterIdx === 10 ? 'backdrop-blur-[2px]' : 'backdrop-blur-md'} rounded-full border relative group-hover:border-blue-300/50 transition-colors`}
+                        className={`w-5 h-20 sm:w-7 sm:h-26 md:w-10 md:h-36 ${currentEncounterIdx === 8 ? 'backdrop-blur-[2px]' : 'backdrop-blur-md'} rounded-full border relative group-hover:border-blue-300/50 transition-colors`}
                       >
                         {/* Pulsing Ethereal Layer - Separated to ensure smooth restoration after Limbo */}
                         <motion.div
                           animate={{ 
                             scale: [1, 1.04, 1],
-                            opacity: currentEncounterIdx === 10 ? [0.3, 0.5, 0.3] : [0.6, 0.9, 0.6],
-                            boxShadow: currentEncounterIdx === 10 ? [
+                            opacity: currentEncounterIdx === 8 ? [0.3, 0.5, 0.3] : [0.6, 0.9, 0.6],
+                            boxShadow: currentEncounterIdx === 8 ? [
                               "0 0 8px rgba(148, 163, 184, 0.1)",
                               "0 0 20px rgba(148, 163, 184, 0.25)",
                               "0 0 8px rgba(148, 163, 184, 0.1)"
@@ -2648,13 +2649,13 @@ export default function App() {
                           }}
                           className="absolute inset-0 rounded-full pointer-events-none"
                         />
-                        <div className={`absolute top-1.5 sm:top-2 left-1/2 -translate-x-1/2 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 md:w-5 md:h-5 rounded-full transition-all duration-1000 ${currentEncounterIdx === 10 ? 'bg-white/10' : 'bg-blue-100/40 shadow-[0_0_12px_rgba(255,255,255,0.5)]'}`} />
+                        <div className={`absolute top-1.5 sm:top-2 left-1/2 -translate-x-1/2 w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 md:w-5 md:h-5 rounded-full transition-all duration-1000 ${currentEncounterIdx === 8 ? 'bg-white/10' : 'bg-blue-100/40 shadow-[0_0_12px_rgba(255,255,255,0.5)]'}`} />
                       </motion.div>
                       <motion.span 
                         initial={{ opacity: 0 }}
                         animate={{ 
                           opacity: showVirgilName ? 1 : 0,
-                          color: currentEncounterIdx === 10 ? "rgba(148, 163, 184, 1)" : "rgba(96, 165, 250, 1)"
+                          color: currentEncounterIdx === 8 ? "rgba(148, 163, 184, 1)" : "rgba(96, 165, 250, 1)"
                         }}
                         transition={{ duration: 1 }}
                         className="text-[7px] sm:text-[8px] md:text-[10px] uppercase tracking-widest font-bold group-hover:text-blue-300 transition-colors"
@@ -2664,9 +2665,9 @@ export default function App() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                {/* Caronte (Idx 9) */}
+                {/* Caronte (Idx 7) */}
                 <AnimatePresence>
-                  {currentEncounterIdx === 9 && (
+                  {currentEncounterIdx === 7 && (
                     <motion.div 
                       initial={{ opacity: 0, scale: 0.4, x: 450, y: 0, rotate: 0 }}
                       animate={gameState !== 'solved' ? { 
@@ -2833,6 +2834,23 @@ export default function App() {
       {/* UI Overlay */}
       <div className="absolute inset-0 flex flex-col pointer-events-none z-30">
         
+        {/* Canto Header Indicator */}
+        <AnimatePresence>
+          {gameState !== 'landing' && currentEncounter && (
+            <motion.div 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+              className="absolute top-4 sm:top-6 md:top-8 left-1/2 -translate-x-1/2 z-50 pointer-events-none"
+            >
+              <span className="text-[9px] sm:text-[11px] md:text-sm font-mono uppercase tracking-[0.4em] text-white/40 font-bold">
+                Canto {currentEncounter.canto}
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Top Bar */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
@@ -2952,10 +2970,9 @@ export default function App() {
                   currentIdx={currentEncounterIdx}
                   encounters={ENCOUNTERS}
                   onSelectCanto={(idx) => {
-                    if (idx <= currentEncounterIdx) {
-                      setCurrentEncounterIdx(idx);
-                      setGameState('journey');
-                    }
+                    // Allow navigating to any item for design/development purposes
+                    setCurrentEncounterIdx(idx);
+                    setGameState('journey');
                   }}
                 />
               )}

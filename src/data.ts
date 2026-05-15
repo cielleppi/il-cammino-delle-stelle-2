@@ -106,50 +106,18 @@ export const ENCOUNTERS: Encounter[] = [
     background: "from-[#1e3a1e] via-[#0a1a0a] to-black"
   },
   {
-    id: "lonza",
-    name: "La Lonza",
+    id: "three_beasts",
+    name: "Le Tre Fiere",
     canto: 1,
-    description: "Ed ecco, quasi al cominciar de l'erta,\nuna lonza leggiera e presta molto,\nche di pel macolato era coverta;",
-    introduction: "Una creatura agile e maculata ti sbarra il cammino. La Lonza, simbolo di lussuria, danza leggera tra le rocce, impedendoti di salire verso la luce.",
+    description: "Una lonza leggiera, un leone superbo e una lupa insaziabile ti sbarrano la strada verso il colle luminoso, spingendoti con terrore verso l'oscurità della selva.",
+    introduction: "Il cammino verso la salvezza è sbarrato da tre ostacoli insormontabili. La lussuria, la superbia e l'avarizia prendono forma in tre bestie feroci che ti circondano, spegnendo ogni speranza di risalita.",
     verse: {
-      id: "v_lonza",
-      text: "Ed ecco, quasi al cominciar de l'erta, una lonza leggiera e ____ molto",
-      missingWord: "presta",
-      options: ["presta", "bella", "feroce", "veloce"],
-      simplified: "All'inizio della salita, appare una lonza leggera e molto veloce.",
-      aacSequence: ["leopard", "dark", "fear"]
-    },
-    background: "from-[#1e3a1e] via-[#0a1a0a] to-black"
-  },
-  {
-    id: "leone",
-    name: "Il Leone",
-    canto: 1,
-    description: "ma non sì che paura non mi desse\nla vista che m'apparve d'un leone,\nche parea che contra me venisse",
-    introduction: "Il terrore si fa più profondo. Un leone maestoso e affamato avanza verso di te con la testa alta, scuotendo l'aria stessa con la sua superbia.",
-    verse: {
-      id: "v_leone",
-      text: "Ma non sì che paura non mi desse la vista che m'apparve d'un ____",
-      missingWord: "leone",
-      options: ["leone", "lupo", "drago", "mostro"],
-      simplified: "Ho avuto molta paura quando ho visto un leone.",
-      aacSequence: ["lion", "fear", "dark"]
-    },
-    background: "from-[#1e3a1e] via-[#0a1a0a] to-black"
-  },
-  {
-    id: "lupa",
-    name: "La Lupa",
-    canto: 1,
-    description: "ed una lupa, che di tutte brame\nsembiava carca ne la sua magrezza,\ne molte genti fé già viver grame,",
-    introduction: "Infine, la più terribile. Una lupa magra e insaziabile, carica di ogni bramosia, ti spinge indietro, verso l'oscurità profonda della selva.",
-    verse: {
-      id: "v_lupa",
-      text: "Ed una lupa, che di tutte ____ sembiava carca ne la sua magrezza",
-      missingWord: "brame",
-      options: ["brame", "voglie", "fami", "pene"],
-      simplified: "Una lupa magra che sembrava avere molta fame mi ha spaventato.",
-      aacSequence: ["wolf", "fear", "sad"]
+      id: "v_three_beasts",
+      text: "Una lonza, un leone e una ____ mi facevan paura e mi spingevano indietro.",
+      missingWord: "lupa",
+      options: ["lupa", "tigre", "bestia", "ombra"],
+      simplified: "Sulla montagna incontro tre animali feroci: una lonza, un leone e una lupa spaventosa.",
+      aacSequence: ["leopard", "lion", "wolf", "fear"]
     },
     background: "from-[#1e3a1e] via-[#0a1a0a] to-black"
   },
