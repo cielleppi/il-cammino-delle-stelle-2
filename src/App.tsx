@@ -215,7 +215,7 @@ const PuzzleStop = ({
 
                   setCanReplay(false);
                   console.log("PuzzleStop: Starting narration immediately...");
-                  const textToSpeak = isSimplified ? encounter.verse.simplified : (encounter.id === "la-selva-oscura" ? encounter.verse.text.replace(/____|\.\.\./, encounter.verse.missingWord) : encounter.description);
+                  const textToSpeak = isSimplified ? encounter.verse.simplified : (encounter.id === "dark_wood" ? encounter.verse.text.replace(/____|\.\.\./, encounter.verse.missingWord) : encounter.description);
                   speak(textToSpeak).finally(() => {
                     setCanReplay(true);
                     console.log("PuzzleStop: Replay finished");
@@ -3093,14 +3093,12 @@ export default function App() {
                 exit={{ opacity: 0, y: -20 }}
                 className="text-center max-w-3xl px-4 relative mb-1 sm:mb-2 md:mb-4"
               >
-                <div className="flex flex-col items-center gap-2 md:gap-4">
-                  <div className="flex items-end justify-center gap-4 md:gap-8">
-                    <div className="w-full max-w-xl min-h-[4.5em] md:min-h-[5.5em] flex flex-col justify-end text-center pb-1 md:pb-2">
-                      <p className="text-white/80 font-serif italic text-base md:text-lg whitespace-pre-line leading-tight sm:leading-relaxed">
-                        {isSimplified ? (currentEncounter.simplifiedDescription || currentEncounter.verse.simplified) : currentEncounter.description}
-                      </p>
-                    </div>
-                    <div className="flex items-end gap-4 md:gap-6 min-h-[4.5em] md:min-h-[5.5em] pb-1 md:pb-2">
+                <div className="flex flex-col items-center gap-2 md:gap-4 mb-4 md:mb-6">
+                  <div className="flex items-center justify-center gap-4 md:gap-8 min-h-[5em]">
+                    <p className="text-white/80 font-serif italic text-base md:text-lg whitespace-pre-line leading-relaxed max-w-xl">
+                      {isSimplified ? currentEncounter.verse.simplified : currentEncounter.description}
+                    </p>
+                    <div className="flex items-center gap-4 md:gap-6">
                       <motion.button 
                         whileHover={journeyCanReplay ? { scale: 1.1, backgroundColor: 'rgba(255,255,255,0.2)' } : {}}
                         whileTap={journeyCanReplay ? { scale: 0.9 } : {}}

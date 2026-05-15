@@ -97,18 +97,18 @@ export const EXPRESSION_CATEGORIES = [
 
 export const ENCOUNTERS: Encounter[] = [
   {
-    id: "la-selva-oscura",
+    id: "dark_wood",
     name: "La Selva Oscura",
     canto: 1,
     description: "Nel mezzo del cammin di nostra vita\nmi ritrovai per una selva oscura,\nché la diritta via era smarrita.",
     simplifiedDescription: "A metà della mia vita mi sono perso in un bosco buio.",
     journeyAacSequence: ["forest", "dark", "fear"],
-    puzzleHeader: "Ahi quanto a dir qual era è cosa dura\nesta selva selvaggia e aspra e forte\nche nel pensier rinova la paura!",
+    puzzleHeader: "Ahi quanto a dir qual era è cosa dura\nesta selva selvaggia e aspra e forte\nche nel pensier rinova la ... !",
     puzzleHeaderSimplified: "È difficile raccontare di questo bosco selvaggio che fa ancora molta paura.",
     introduction: "Benvenuto, viandante. Ti trovi all'inizio di un viaggio periglioso. Smarrito in una selva dove la luce fatica a penetrare, dovrai ritrovare la via tra ombre e timori.",
     verse: {
       id: "v1",
-      text: "Cosa rinnova il pensiero della selva ____?",
+      text: "Cosa rinnova il pensiero della selva ____ ?",
       missingWord: "paura",
       options: ["paura", "fuga", "pena", "tristezza"],
       simplified: "È difficile raccontare di questo bosco selvaggio che fa ancora molta paura.",
