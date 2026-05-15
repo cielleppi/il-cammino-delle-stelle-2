@@ -77,6 +77,9 @@ export const AAC_ICONS: Record<string, AACIcon> = {
   "mangiare": { id: "mangiare", label: "Mangiare", icon: "🍎" },
   "bere": { id: "bere", label: "Bere", icon: "💧" },
   "uscire": { id: "uscire", label: "Uscire", icon: "🚶" },
+  "shadow": { id: "shadow", label: "Ombra", icon: "👤" },
+  "desert": { id: "desert", label: "Deserto", icon: "🏜️" },
+  "man": { id: "man", label: "Uomo", icon: "🧍" },
 };
 
 export const EXPRESSION_CATEGORIES = [
@@ -143,14 +146,18 @@ export const ENCOUNTERS: Encounter[] = [
     id: "virgil_appears",
     name: "L'Incontro con Virgilio",
     canto: 1,
-    description: "O de li altri poeti onore e lume,\nvagliami 'l lungo studio e 'l grande amore\nche m'ha fatto cercar lo tuo volume.",
+    description: "Quando vidi costui nel gran diserto,\n«Miserere di me», gridai a lui,\n«qual che tu sii, od ombra od omo certo!",
+    simplifiedDescription: "Quando vidi lui nel grande deserto,\ngridai: 'Aiutami!',\nchiunque tu sia, ombra o uomo vero.",
+    journeyAacSequence: ["forest", "shadow", "man", "aiuto"],
+    puzzleHeader: "«Or se' tu quel Virgilio e quella fonte\nche spandi di parlar sì largo fiume?»,\nrispuos' io lui con vergognosa fronte.\n(...)\nVedi la bestia per cu' io mi volsi;\naiutami da lei, famoso saggio,\nch'ella mi fa tremar le vene e i polsi».",
+    puzzleHeaderSimplified: "Sei tu Virgilio, quel grande poeta che parla così bene?\nAiutami a scappare dalla bestia feroce che mi fa molta paura.",
     introduction: "Mentre lo smarrimento ti assale, un'ombra si profila all'orizzonte. È una guida saggia, pronta a condurti attraverso i regni dell'eterno dolore. Ascolta la sua voce.",
     verse: {
       id: "v2",
-      text: "O degli altri poeti onore e ____",
+      text: "Virgilio è degli altri poeti onore e ____",
       missingWord: "lume",
-      options: ["lume", "voce", "guida", "sole"],
-      simplified: "Tu sei la luce e l'onore di tutti gli altri poeti.",
+      options: ["lume", "guida", "sole", "maestro"],
+      simplified: "Virgilio è il mio maestro e la mia guida.",
       aacSequence: ["light", "guide", "hope"]
     },
     background: "from-indigo-950 to-blue-900"

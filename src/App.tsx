@@ -254,7 +254,7 @@ const PuzzleStop = ({
           </div>
           <h1 className="text-sm sm:text-xl md:text-2xl font-serif italic text-white mb-0 sm:mb-2 tracking-tight">{encounter.name}</h1>
           <p className="text-white/60 leading-tight text-[8px] sm:text-xs md:text-sm max-w-xl font-light whitespace-pre-line mb-1 sm:mb-2 italic">
-            {isSimplified ? (encounter.puzzleHeaderSimplified || encounter.verse.simplified) : (encounter.puzzleHeader || encounter.description)}
+            {isSimplified ? (encounter.puzzleHeaderSimplified || encounter.simplifiedDescription || encounter.verse.simplified) : (encounter.puzzleHeader || encounter.description)}
           </p>
         </div>
 
@@ -3103,7 +3103,7 @@ export default function App() {
                   <div className="flex items-end justify-center gap-4 md:gap-8 min-h-[6em] md:min-h-[8em]">
                     <div className="flex flex-col justify-end pb-2">
                       <p className="text-white/80 font-serif italic text-base md:text-lg whitespace-pre-line leading-relaxed max-w-xl">
-                        {isSimplified ? currentEncounter.verse.simplified : currentEncounter.description}
+                        {isSimplified ? (currentEncounter.simplifiedDescription || currentEncounter.verse.simplified) : currentEncounter.description}
                       </p>
                     </div>
                     <div className="flex items-end gap-4 md:gap-6 pb-2">
